@@ -13,10 +13,10 @@ const page = () => {
   }, [user]);
 
   return (
-    <>
+    <div>
       <Header />
       <Hero />
-    </>
+    </div>
   );
 };
 
