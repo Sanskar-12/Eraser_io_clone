@@ -1,6 +1,6 @@
 import { ChevronDown, LogOut, Settings, Users } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -8,8 +8,20 @@ import {
 } from "@/components/ui/popover";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 import { Separator } from "@/components/ui/separator";
+import { useConvex } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-const SideNavTopSection = () => {
+export interface TeamList {
+  createdBy: string;
+  teamName: string;
+  _id: string;
+}
+
+const SideNavTopSection = ({ user }: any) => {
+  const convex = useConvex();
+  const [teamList, setTeamList] = useState<TeamList[]>([]);
+  const [activeTeam, setActiveTeam] = useState<TeamList>();
+
   const menu = [
     {
       id: 1,
@@ -25,6 +37,20 @@ const SideNavTopSection = () => {
     },
   ];
 
+  useEffect(() => {
+    if (user) {
+      getTeamList();
+    }
+  }, [user]);
+
+  const getTeamList = async () => {
+    const result = await convex.query(api.teams.getTeam, {
+      email: user?.email!,
+    });
+    setTeamList(result);
+    setActiveTeam(result[0]);
+  };
+
   return (
     <Popover>
       <PopoverTrigger>
@@ -32,7 +58,7 @@ const SideNavTopSection = () => {
         <div className="flex items-center gap-3 hover:bg-slate-200 p-3 rounded-lg cursor-pointer">
           <Image src={"/logo.png"} alt="logo" height={40} width={40} />
           <h2 className="flex gap-2 items-center font-bold text-[17px]">
-            Team Name
+            {activeTeam?.teamName}
             <ChevronDown />
           </h2>
         </div>
@@ -40,7 +66,15 @@ const SideNavTopSection = () => {
       <PopoverContent className="ml-7 p-4">
         {/* Team Section */}
         <div>
-          <h2>Team Name</h2>
+          {teamList?.map((team, index) => (
+            <h2
+              key={index}
+              className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg mb-1 cursor-pointer ${activeTeam?._id === team._id && "bg-blue-500 text-white"}`}
+              onClick={() => setActiveTeam(team)}
+            >
+              {team.teamName}
+            </h2>
+          ))}
         </div>
         <Separator className="mt-2 bg-slate-100" />
         {/* Option Section */}
@@ -67,6 +101,16 @@ const SideNavTopSection = () => {
         </div>
         <Separator className="mt-2 bg-slate-100" />
         {/* User Info Section */}
+        {user && (
+          <div className="mt-2 flex gap-2 items-center">
+            <div>
+              <h2 className="text-[14px] font-bold">
+                {user?.given_name} {user?.family_name}
+              </h2>
+              <h2 className="text-[12px] text-gray-500">{user?.email}</h2>
+            </div>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );
