@@ -21,7 +21,7 @@ export interface TeamList {
   _id: string;
 }
 
-const SideNavTopSection = ({ user }: any) => {
+const SideNavTopSection = ({ user, setActiveTeamInfo }: any) => {
   const convex = useConvex();
   const router = useRouter();
   const [teamList, setTeamList] = useState<TeamList[]>([]);
@@ -48,6 +48,10 @@ const SideNavTopSection = ({ user }: any) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    activeTeam && setActiveTeamInfo(activeTeam);
+  }, [activeTeam]);
+
   const getTeamList = async () => {
     const result = await convex.query(api.teams.getTeam, {
       email: user?.email!,
@@ -66,7 +70,6 @@ const SideNavTopSection = ({ user }: any) => {
     <div>
       <Popover>
         <PopoverTrigger>
-          {" "}
           <div className="flex items-center gap-3 hover:bg-slate-200 p-3 rounded-lg cursor-pointer">
             <Image src={"/logo.png"} alt="logo" height={40} width={40} />
             <h2 className="flex gap-2 items-center font-bold text-[17px]">

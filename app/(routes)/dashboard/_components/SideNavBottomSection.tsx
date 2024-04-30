@@ -54,8 +54,7 @@ const SideNavBottomSection = ({ onFileCreate }: any) => {
       {/* Add New File Button */}
 
       <Dialog>
-        <DialogTrigger className="w-full">
-          {" "}
+        <DialogTrigger className="w-full" asChild>
           <Button className="w-full bg-blue-600 hover:bg-blue-700 justify-start mt-3">
             New File
           </Button>
