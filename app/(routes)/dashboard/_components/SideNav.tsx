@@ -7,6 +7,8 @@ import SideNavBottomSection from "./SideNavBottomSection";
 const SideNav = () => {
   const { user } = useKindeBrowserClient();
 
+  console.log(user);
+
   const onFileCreate = (fileInput: string) => {
     console.log(fileInput);
   };
