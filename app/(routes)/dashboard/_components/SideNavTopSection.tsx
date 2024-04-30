@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDown, LayoutGrid, LogOut, Settings, Users } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -68,7 +70,7 @@ const SideNavTopSection = ({ user }: any) => {
           <div className="flex items-center gap-3 hover:bg-slate-200 p-3 rounded-lg cursor-pointer">
             <Image src={"/logo.png"} alt="logo" height={40} width={40} />
             <h2 className="flex gap-2 items-center font-bold text-[17px]">
-              {activeTeam?.teamName}
+              {activeTeam && activeTeam?.teamName}
               <ChevronDown />
             </h2>
           </div>
