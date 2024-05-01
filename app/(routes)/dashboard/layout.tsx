@@ -4,13 +4,15 @@ import { api } from "@/convex/_generated/api";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useConvex } from "convex/react";
 import { useRouter } from "next/navigation";
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import SideNav from "./_components/SideNav";
+import { FilesListContext } from "@/app/_context/FilesListContext";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const convex = useConvex();
   const router = useRouter();
   const { user } = useKindeBrowserClient();
+  const [filesList, setFileList] = useState();
 
   useEffect(() => {
     if (user) {
@@ -30,12 +32,14 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-4">
-        <div>
-          <SideNav />
+      <FilesListContext.Provider value={{ filesList, setFileList }}>
+        <div className="grid grid-cols-4">
+          <div className="h-screen w-72 fixed">
+            <SideNav />
+          </div>
+          <div className="col-span-4 ml-72"> {children}</div>
         </div>
-        <div className=" grid-cols-3"> {children}</div>
-      </div>
+      </FilesListContext.Provider>
     </div>
   );
 };
