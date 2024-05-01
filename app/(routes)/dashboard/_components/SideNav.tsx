@@ -18,6 +18,9 @@ const SideNav = () => {
       fileInput,
       teamId: activeTeam?._id!,
       createdBy: user?.email!,
+      archive: false,
+      document: "",
+      whiteboard: "",
     })
       .then((resp) => {
         toast("File Created Successfully!");
