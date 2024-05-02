@@ -2,15 +2,14 @@ import { FilesListContext } from "@/app/_context/FilesListContext";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Archive, MoreHorizontal } from "lucide-react";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 export interface File {
   _id: string;
@@ -27,6 +26,7 @@ const FilesList = () => {
   const { filesList, setFileList } = useContext(FilesListContext);
 
   const { user } = useKindeBrowserClient();
+  const router = useRouter();
 
   return (
     <div className="mt-10">
@@ -52,7 +52,11 @@ const FilesList = () => {
           <tbody className="divide-y divide-gray-200">
             {filesList &&
               filesList?.map((file: File, index: number) => (
-                <tr key={index} className="odd:bg-gray-50">
+                <tr
+                  key={index}
+                  className="odd:bg-gray-50 cursor-pointer"
+                  onClick={() => router.push(`/workspace/${file?._id}`)}
+                >
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     {file?.fileInput}
                   </td>
