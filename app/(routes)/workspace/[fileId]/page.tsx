@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { File } from "../../dashboard/_components/FilesList";
+import Canvas from "../_components/Canvas";
 
 const Workspace = () => {
   const [triggerSave, setTriggerSave] = useState(false);
@@ -40,7 +41,9 @@ const Workspace = () => {
           />
         </div>
         {/* Whiteboard Canvas */}
-        <div className=" h-screen">Canvas</div>
+        <div className=" h-screen border-l">
+          <Canvas />
+        </div>
       </div>
     </div>
   );

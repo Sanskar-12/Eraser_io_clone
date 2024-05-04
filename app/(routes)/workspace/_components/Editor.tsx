@@ -6,7 +6,6 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import Checklist from "@editorjs/checklist";
-import Paragraph from "@editorjs/paragraph";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
@@ -67,10 +66,6 @@ const Editor = ({ triggerSave, fileId, fileData }: any) => {
         },
         checklist: {
           class: Checklist,
-          inlineToolbar: true,
-        },
-        paragraph: {
-          class: Paragraph,
           inlineToolbar: true,
         },
       },
