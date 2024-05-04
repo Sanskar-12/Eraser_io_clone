@@ -33,14 +33,14 @@ const rawDocument = {
   version: "2.8.1",
 };
 
-const Editor = ({ triggerSave, fileId }: any) => {
+const Editor = ({ triggerSave, fileId, fileData }: any) => {
   const ref = useRef<EditorJS>();
   const updateDocument = useMutation(api.files.updateDocument);
   const [document, setDocument] = useState(rawDocument);
 
   useEffect(() => {
-    initEditor();
-  }, []);
+    fileData && initEditor();
+  }, [fileData]);
 
   useEffect(() => {
     triggerSave && onSaveDocument();
@@ -75,7 +75,7 @@ const Editor = ({ triggerSave, fileId }: any) => {
         },
       },
       holder: "editorjs",
-      data: document,
+      data: fileData.document ? JSON.parse(fileData.document) : document,
     });
 
     ref.current = editor;
@@ -86,7 +86,6 @@ const Editor = ({ triggerSave, fileId }: any) => {
       ref?.current
         .save()
         .then((outputData) => {
-          console.log("Article data: ", outputData);
           updateDocument({
             _id: fileId,
             document: JSON.stringify(outputData),
